@@ -13,7 +13,7 @@ Here are some recommendations for future research:
 
 ## TODO
 - [x] Import initial models
-- [ ] Move to git hub!!
+- [x] Move to git hub!!
 - [ ] SVM - param fitting with kernel=poly
 - [ ] Spike : Research KNeighborsRegressor
 - [ ] Spike : Logistic Regression with polynomials and regularization
