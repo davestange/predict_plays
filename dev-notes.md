@@ -50,7 +50,7 @@ Next:
 | Dummy | 0 | 0.0149 secs | 0.602564 | 0.602364 |
 | LogisticRegression (fit_intercept = False, penalty = l2, C = 10000.0, class_weight = None, solver = liblinear) | 11 | 0.0442 secs | 0.730356 | 0.728659 |
 | K-Nearest Neighbors (algorithm = kd_tree, n_neighbors = 10, weights = None) | 11 | 0.0650 secs | 0.655914 | 0.586458 |
-| DecisionTreeClassifier with (criterion=log_loss, max_depth=6, max_features=log2) | 11 | 0.0222 secs | 0.729529 | 0.724062 |
+| DecisionTreeClassifier with (criterion=log_loss, max_depth=3, max_features=log2) | 11 | 0.0353 secs | 0.732423 | 0.733183 |
 | SVM (default params) | 11 | 1.2117 secs | 0.602564 | 0.602364 |
 |  |  |  |  |  |
 |  BINARY CLASSIFICATION |
