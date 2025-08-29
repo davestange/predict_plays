@@ -43,7 +43,8 @@ Next:
  - look at binary classification (results are better, exclude kneel downs and spikes - put qb sneak in with runs and change formation to be JUMBO)
  - this will get roc curve working again
 ```
-|  NON-BINARY CLASSIFICATION |
+
+|  NON-BINARY CLASSIFICATION |  |  |  |  |
 | Dummy | 0 | 0.0125 secs | 0.601660 | 0.602405 |
 | LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 11 | 0.0368 secs | 0.717842 | 0.710949 |
 | K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0238 secs | 1.000000 | 0.515772 |
@@ -51,8 +52,7 @@ Next:
 | DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0181 secs | 0.676349 | 0.678713 |
 | DecisionTreeClassifier with (criterion=gini, max_depth=2, max_features=None) | 11 | 0.0333 secs | 0.709544 | 0.707927 |
 | SVM (default params) | 11 | 0.1341 secs | 0.601660 | 0.602405 |
-|  |  |  |  |  |
-|  BINARY CLASSIFICATION |
+|  BINARY CLASSIFICATION |  |  |  |  |
 | Dummy | 0 | 0.0183 secs | 0.605809 | 0.603790 |
 | LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 11 | 0.0358 secs | 0.788382 | 0.734181 |
 | K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0580 secs | 1.000000 | 0.525719 |
