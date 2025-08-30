@@ -26,17 +26,19 @@ Here are some recommendations for future research:
 
 # Training Log
 ## 8/30
+```
 Switching over to full binary classification; improving automation
+```
 
-Best Run is 0.7364657814096016 from LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs)
+*Best Run is 0.736466 from LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs)*
 
 | Model | Features | Train Time | Train Accuracy | Test Accuracy |
 | ----- | -------- | ---------- | -------------  | -----------   |
-| Dummy | 0 | 0.0091 secs | 0.603805 | 0.603823 |
-| LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 11 | 0.0338 secs | 0.732423 | 0.736466 |
-| K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0665 secs | 0.990074 | 0.559463 |
-| DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0253 secs | 0.660877 | 0.664308 |
-| SVM (default params) | 11 | 1.1939 secs | 0.603805 | 0.603823 |
+| Dummy | 0 | 0.0081 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 11 | 0.0352 secs | 0.732423 | 0.736466 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0590 secs | 0.990074 | 0.559463 |
+| DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0230 secs | 0.660877 | 0.664308 |
+| SVM (default params) | 11 | 1.1560 secs | 0.603805 | 0.603823 |
 
 ## 8/29
 ```
