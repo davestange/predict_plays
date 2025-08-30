@@ -42,6 +42,7 @@ Switching over to full binary classification; improving automation
 
 ## 8/29
 ```
+Using non-binary classification.
 Added framework from class work, seeing a drop in test accuracy. Training percent dropped, tweaked formations, added hyper parameters. 
 
 Next:
@@ -50,27 +51,25 @@ Next:
  - look at pruning nodes from decision tree
  - look into 
 ```
+*Best Run is 0.733183 from DecisionTreeClassifier with (criterion=log_loss, max_depth=3, max_features=log2)*
+
 | Model | Features | Train Time | Train Accuracy | Test Accuracy |
 | ----- | -------- | ---------- | -------------  | -----------   |
-|  NON-BINARY CLASSIFICATION |
 | Dummy | 0 | 0.0149 secs | 0.602564 | 0.602364 |
 | LogisticRegression (fit_intercept = False, penalty = l2, C = 10000.0, class_weight = None, solver = liblinear) | 11 | 0.0442 secs | 0.730356 | 0.728659 |
 | K-Nearest Neighbors (algorithm = kd_tree, n_neighbors = 10, weights = None) | 11 | 0.0650 secs | 0.655914 | 0.586458 |
 | DecisionTreeClassifier with (criterion=log_loss, max_depth=3, max_features=log2) | 11 | 0.0353 secs | 0.732423 | 0.733183 |
 | SVM (default params) | 11 | 1.2117 secs | 0.602564 | 0.602364 |
-|  |  |  |  |  |
-|  BINARY CLASSIFICATION |
-| Dummy | 0 | 0.0183 secs | 0.605809 | 0.603790 |
-| LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 11 | 0.0358 secs | 0.788382 | 0.734181 |
-| K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0580 secs | 1.000000 | 0.525719 |
-| DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0212 secs | 0.726141 | 0.684002 |
-| SVM (default params) | 11 | 0.1329 secs | 0.605809 | 0.603790 |
 
 
 ## 8/16
 ```
+Using binary classification.
 Imported initial models, initial param fitting, results below
 ```
+
+*Best Run is 0.738283 from DecisionTreeClassifier with max_depth=5*
+
 | Model | Features | Train Time | Train Accuracy | Test Accuracy |
 | ----- | -------- | ---------- | -------------  | -----------   |
 | Dummy | 0 | 0.0121 secs | 0.599545 | 0.603615 |
