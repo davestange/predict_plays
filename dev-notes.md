@@ -14,25 +14,29 @@ Here are some recommendations for future research:
 ## TODO
 - [x] Import initial models
 - [x] Move to git hub!!
+- [x] Switch over to binary classification; get images working again
+- [ ] Spike : Split out different game scenarios. 4th down, 2min drill, etc ??
+              Create obvious running vs passing scenarios
+- [ ] Spike : Team by team analysis - add hot encoding? 
+              Also, research team by team accuracy to see which teams had highest accuracy
 - [ ] SVM - param fitting with kernel=poly
 - [ ] Spike : Research KNeighborsRegressor
 - [ ] Spike : Logistic Regression with polynomials and regularization
 - [ ] Spike : Stochastic Gradient Descent - didn't get a chance to use this
-- [ ] Spike : Split out different game scenarios. 4th down, 2min drill, etc ??
-- [ ] Spike : Team by team analysis
 
 # Training Log
-## 8/16
-```
-Imported initial models, initial param fitting, results below
-```
+## 8/30
+Switching over to full binary classification; improving automation
+
+Best Run is 0.7364657814096016 from LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs)
+
 | Model | Features | Train Time | Train Accuracy | Test Accuracy |
 | ----- | -------- | ---------- | -------------  | -----------   |
-| Dummy | 0 | 0.0121 secs | 0.599545 | 0.603615 |
-| LogisticRegression | 11 | 0.0655 secs | 0.724623 | 0.736600 |
-| KNN with 2 neighbors | 11 | 0.2155 secs | 0.778582 | 0.601311 |
-| DecisionTreeClassifier with max_depth=5 | 11 | 0.0491 secs | 0.726897 | 0.738283 |
-| SVM (default params) | 11 | 2.1202 secs | 0.599545 | 0.603615 |
+| Dummy | 0 | 0.0091 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 11 | 0.0338 secs | 0.732423 | 0.736466 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0665 secs | 0.990074 | 0.559463 |
+| DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0253 secs | 0.660877 | 0.664308 |
+| SVM (default params) | 11 | 1.1939 secs | 0.603805 | 0.603823 |
 
 ## 8/29
 ```
@@ -59,3 +63,16 @@ Next:
 | K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 11 | 0.0580 secs | 1.000000 | 0.525719 |
 | DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0212 secs | 0.726141 | 0.684002 |
 | SVM (default params) | 11 | 0.1329 secs | 0.605809 | 0.603790 |
+
+
+## 8/16
+```
+Imported initial models, initial param fitting, results below
+```
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0121 secs | 0.599545 | 0.603615 |
+| LogisticRegression | 11 | 0.0655 secs | 0.724623 | 0.736600 |
+| KNN with 2 neighbors | 11 | 0.2155 secs | 0.778582 | 0.601311 |
+| DecisionTreeClassifier with max_depth=5 | 11 | 0.0491 secs | 0.726897 | 0.738283 |
+| SVM (default params) | 11 | 2.1202 secs | 0.599545 | 0.603615 |
