@@ -15,6 +15,7 @@ Here are some recommendations for future research:
 - [x] Import initial models
 - [x] Move to git hub!!
 - [x] Switch over to binary classification; get images working again
+- [ ] WHAT IS THE SCORE OF THE GAME!!! Determine home team and add in win-probability
 - [ ] Spike : Split out different game scenarios. 4th down, 2min drill, etc ??
               Create obvious running vs passing scenarios
 - [ ] Spike : Team by team analysis - add hot encoding? 
@@ -26,9 +27,36 @@ Here are some recommendations for future research:
 
 # Training Log
 ## 8/30
-```
-Switching over to full binary classification; improving automation
-```
+```Using 15/85 split for both operations. Adding score or win percentage yields the same EXACT result. ```
+
+TODO
+[ ] Git rid of noise - drop formation, is_overtime and just use secs_remaining
+[ ] Add in something akin to "pass liklihood", based on win percentage and time remaining
+[ ] Consider using sequential feature selection
+
+*Best Run is 0.741354 from DecisionTreeClassifier with (criterion=entropy, max_depth=3, max_features=None)*
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0083 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = False, penalty = l2, C = 1.0, class_weight = balanced, solver = liblinear) | 14 | 0.0258 secs | 0.748966 | 0.737633 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 14 | 0.6249 secs | 0.683623 | 0.605720 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=3, max_features=None) | 14 | 0.0233 secs | 0.741108 | 0.741354 |
+| SVM (default params) | 14 | 0.5421 secs | 0.603805 | 0.603823 |
+
+```Adding in score and win probability and it dropped! :/ ```
+
+*Best Run is 0.733037 from LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs)*
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0079 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs) | 14 | 0.0366 secs | 0.726220 | 0.733037 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 1, weights = None) | 14 | 0.4931 secs | 1.000000 | 0.569896 |
+| DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 14 | 0.0223 secs | 0.660877 | 0.664308 |
+| SVM (default params) | 14 | 0.5445 secs | 0.603805 | 0.603823 |
+
+```Switching over to full binary classification; improving automation. Training with 1.5% of data.```
 
 *Best Run is 0.736466 from LogisticRegression (fit_intercept = True, penalty = None, C = 1.0, class_weight = None, solver = lbfgs)*
 
@@ -40,10 +68,11 @@ Switching over to full binary classification; improving automation
 | DecisionTreeClassifier with (criterion=gini, max_depth=1, max_features=None) | 11 | 0.0230 secs | 0.660877 | 0.664308 |
 | SVM (default params) | 11 | 1.1560 secs | 0.603805 | 0.603823 |
 
+
 ## 8/29
 ```
 Using non-binary classification.
-Added framework from class work, seeing a drop in test accuracy. Training percent dropped, tweaked formations, added hyper parameters. 
+Added framework from class work, seeing a drop in test accuracy. Training percent dropped, tweaked formations, added hyper parameters. Training with 1.5% of data.
 
 Next:
  - data is pretty clean, accuracy is topping out at 71%
@@ -64,8 +93,7 @@ Next:
 
 ## 8/16
 ```
-Using binary classification.
-Imported initial models, initial param fitting, results below
+Using binary classification. Imported initial models, initial param fitting, results below. Training with 30% of data.
 ```
 
 *Best Run is 0.738283 from DecisionTreeClassifier with max_depth=5*
