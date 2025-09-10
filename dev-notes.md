@@ -26,6 +26,17 @@ Here are some recommendations for future research:
 - [ ] Spike : Stochastic Gradient Descent - didn't get a chance to use this
 
 # Training Log
+## 9/09
+```added sequential feature selection```
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0240 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = False, penalty = l2, C = 1.0, class_weight = balanced, solver = liblinear) | 26 | 0.0198 secs | 0.734078 | 0.737852 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 26 | 0.0964 secs | 0.739454 | 0.741500 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=3, max_features=None) | 26 | 0.0146 secs | 0.739454 | 0.741500 |
+| SVM (default params) | 26 | 0.0144 secs | 0.739454 | 0.741500 |
+
 ## 8/30
 ```Using 15/85 split for both operations. Adding score or win percentage yields the same EXACT result. ```
 
