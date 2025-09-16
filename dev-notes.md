@@ -26,8 +26,27 @@ Here are some recommendations for future research:
 - [ ] Spike : Stochastic Gradient Descent - didn't get a chance to use this
 
 # Training Log
+## 09/13
+```added random forests and gradient boost classifier```
+
+*Best Run is 0.746680 from GradientBoostingClassifier with (n_estimators=32)*
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0218 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = False, penalty = l2, C = 1.0, class_weight = balanced, solver = liblinear) | 26 | 0.0187 secs | 0.734078 | 0.737852 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 26 | 0.0979 secs | 0.739454 | 0.741500 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=3, max_features=None) | 26 | 0.0142 secs | 0.739454 | 0.741500 |
+| SVM (default params) | 26 | 0.0143 secs | 0.739454 | 0.741500 |
+| Ridge with StandardScaler | 26 | 0.0230 secs | 0.936725 | 0.676784 |
+| RandomForestClassifier with (n_estimators=3, max_features=7) | 26 | 0.0209 secs | 0.937965 | 0.690646 |
+| GradientBoostingClassifier with (n_estimators=32) | 26 | 0.0742 secs | 0.752275 | 0.746680 |
+
 ## 9/09
 ```added sequential feature selection```
+
+*Best Run is 0.741500 from K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None)*
+
 
 | Model | Features | Train Time | Train Accuracy | Test Accuracy |
 | ----- | -------- | ---------- | -------------  | -----------   |
