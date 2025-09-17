@@ -17,20 +17,26 @@ I'll be using the NFL Big Data Bowl 2025 dataset (https://www.kaggle.com/competi
 
 The play by play data contains game conditions (down, distance, score), pre-snap information (formation, personel), and the result of the play (type of play, outcome, etc). Only the game conditions and pre-snap information will be used for model training. 
 
+
+#### EDA
+Initial EDA has been done over the past several months. During this time, I've cleaned the data (removing plays which can't realistically be attributed to run vs pass classification), added a number of additional columns (score offset, dummies, etc), and joined data from other sources (which team is home versus away). I've also done some initial analysis - this plot shows how the odds of pass or run is affected by the quarter and the score offset. 
+![score_vs_result_by_quarter](resources/score_vs_result_by_quarter.png "score_vs_result_by_quarter")
+
 #### Methodology
 This is a binary classification problem. To solve this, I will be using scaling, iterative hyperparameter tuning, a number of classification models (logistic regression, K-Nearest Neighbors, Decision Tree, Support Vector Machines) as well as ensemble techniques (random forest and gradient boosting). 
 
 #### Results
 The baseline model achieved a baseline accuracy score of 60%. The current best model (using GradientBoostingClassifier with 32 classifiers) is able to achieve an accuracy score of 74.7% (an increase of 24.5%).
 
+Training results can be seen in the [Change Log](changelog.md)
+
 #### Next steps
 The upper limit, given the training features that I'm currently using, seems to be around 75%. I originally used dummy fields for the offensive team (1 of 32 values) but ran into compute limits. Further exploration should include the offensive team, defensive team and other game conditions (weather, etc). 
 
 #### Outline of project
 
-- [Link to notebook 1]()
-- [Link to notebook 2]()
-- [Link to notebook 3]()
+The following notebooks are in use
+- [predict.ipynb](predict.ipynb)
 
 
 ##### Contact and Further Information
