@@ -26,6 +26,23 @@ Here are some recommendations for future research:
 - [ ] Spike : Stochastic Gradient Descent - didn't get a chance to use this
 
 # Training Log
+## 10/05
+*Best Run is 0.743689 from LogisticRegression (fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky)*
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0087 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky) | 29 | 0.0142 secs | 0.741935 | 0.743689 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 29 | 0.1761 secs | 0.740281 | 0.740479 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 29 | 0.0123 secs | 0.746071 | 0.742959 |
+| Dummy | 0 | 0.0153 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky) | 29 | 0.0163 secs | 0.741935 | 0.743689 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 29 | 0.1756 secs | 0.740281 | 0.740479 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 29 | 0.0123 secs | 0.746071 | 0.742959 |
+| SVM (default params) | 29 | 0.0296 secs | 0.767577 | 0.730045 |
+| RandomForestClassifier with (n_estimators=3, max_features=6) | 29 | 0.0371 secs | 0.937138 | 0.687436 |
+| GradientBoostingClassifier with (n_estimators=32) | 29 | 0.0924 secs | 0.753929 | 0.743397 |
+
 ## 09/13
 ```added random forests and gradient boost classifier```
 

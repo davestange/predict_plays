@@ -142,23 +142,69 @@ For defensive coaches, who are generally risk adverse, false negatives come at a
 For training data, I choose a 15/85 split (15% training data, 85% test data). The data was shuffled and stratified based on the training features with a constant random state chosen. 
  
 # Outcome
-The goal of this project was to predict the outcome of an individual play. Seven different supervised models were evaluated against their accuracy. The mean of the dataset is 60% passes, the initial expectation was that our model could improve upon the baseline by at least 125% (75% accuracy being our goal). 
+
+## Overall Goal
+The goal of this project was to predict the outcome of an individual play. Seven different supervised models were evaluated against their accuracy. The mean of the dataset is 60% passes, the initial expectation was that our model could improve upon the baseline by at least 120% (70% accuracy being our goal). 
+
+## Findings
+The algorithm with the best accuracy LogisticRegression (0.7437) followed by GradientBoostingClassifier, DecisionTreeClassifier, and K-Nearest Neighbors all being differentiated by no more than 1%. The algorithm with the best precision is GradientBoostingClassifier (0.6923) with LogisticRegression, K-Nearest Neighbors, and DecisionTreeClassifier coming in within 1.2%. 
+
+While we were able to achieve a 23% increase over our baseline of 60.38%, we'll need a higher accuracy than 74% before it will be useful.  
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy | Precision |
+| ----- | -------- | ---------- | -------------  | -----------   | -----------   |
+| LogisticRegression (fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky) | 29 | 0.0163 secs | 0.741935 | 0.743689 | 0.6870 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 29 | 0.1756 secs | 0.740281 | 0.740479 | 0.6853 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 29 | 0.0123 secs | 0.746071 | 0.742959 | 0.6843 |
+| SVM (default params) | 29 | 0.0296 secs | 0.767577 | 0.730045 | 0.6523 |
+| RandomForestClassifier with (n_estimators=3, max_features=6) | 29 | 0.0371 secs | 0.937138 | 0.687436 | 0.5997 |
+| GradientBoostingClassifier with (n_estimators=32) | 29 | 0.0924 secs | 0.753929 | 0.743397 | 0.6923 |
+
+
+| Model | EMPTY | I_FORM | JUMBO | MUDDLE | PISTOL | SHOTGUN | SINGLEBACK | VICTORY | WILDCAT |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| lr | 0.9665 | 0.7138 | 0.8426 | 1.0000 | 0.6552 | 0.7464 | 0.6658 | 1.0000 | 0.8378 | 
+| kn | 0.9665 | 0.7149 | 0.8426 | 0.0476 | 0.6438 | 0.7456 | 0.6616 | 1.0000 | 0.8514 | 
+| dt | 0.9656 | 0.7103 | 0.8426 | 1.0000 | 0.6610 | 0.7468 | 0.6655 | 1.0000 | 0.6892 | 
+| sv | 0.9550 | 0.7034 | 0.8148 | 0.4762 | 0.6800 | 0.7294 | 0.6553 | 0.9728 | 0.8649 | 
+| rf | 0.9259 | 0.6431 | 0.6667 | 0.7143 | 0.6190 | 0.7053 | 0.5918 | 1.0000 | 0.6622 | 
+| gb | 0.9665 | 0.7080 | 0.7963 | 0.0000 | 0.7029 | 0.7509 | 0.6586 | 1.0000 | 0.7297 | 
 
 ## Logistic Regression
+With hyperparameters, fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky, it achieved an accuracy of 0.743689 and a precision of 0.6870 in 0.0142 secs.
+
+<img src="resources/model_logistic_regression.png" width="600"/>
 
 ## K-Nearest Neighbors
+With hyperparameters, algorithm = auto, n_neighbors = 10, weights = None, it achieved an accuracy of 0.740479 and a precision of 0.6853 in 0.1756 secs.
+
+<img src="resources/model_k_neighbors.png" width="600"/>
 
 ## Decision Tree
+With hyperparameters, criterion=entropy, max_depth=6, max_features=None, it achieved an accuracy of 0.742959 and a precision of 0.6843 in 0.0123 secs.
+
+<img src="resources/model_decision_tree.png" width="600"/>
 
 ## Support Vector Machines
+With default parameters, it achieved an accuracy of 0.730045 and a precision of 0.6523 in 0.0296 secs.
 
-## Ridge
+<img src="resources/model_support_vector.png" width="600"/>
 
 ## Random Forest
+With hyperparameters, n_estimators=3, max_features=6, it achieved an accuracy of 0.687436 and a precision of 0.5997 in 0.0371 secs.
+
+<img src="resources/model_random_forest.png" width="600"/>
 
 ## Gradient Boosting Ensemble
+With hyperparameters, n_estimators=32, it achieved an accuracy of 0.743397 and a precision of 0.6923 in 0.0924 secs.
+
+<img src="resources/model_gradient_boosting.png" width="600"/>
 
 ## Extreme Gradient Boosting
+
+
+
+
 
  - Identify the type of learning (classification or regression) and specify the expected output of your selected model.
  - Determine whether supervised or unsupervised learning algorithms will be used.
@@ -171,7 +217,7 @@ was most optimal for your problem.
  - can we come up with an approach that is the 
 
 # notebook cleanup
- - try ExiBoost
+ - try XgBoost
  - cleanup ALL ERRORS
  - disable ALL WARNINGS
  - do final runthrough
@@ -210,3 +256,4 @@ The following notebooks are in use
 ⚠️ Kneeldowns - Consider victory formation
 ⚠️ For spikes - use the previous formation?
 ⚠️ Create "behind the sticks" and "short yardage" features
+⚠️ decimal points
