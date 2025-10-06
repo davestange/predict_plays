@@ -85,22 +85,83 @@ The notebook has two modes, which can be set in the topmost section (Hyperparame
 * Model Training - this allows you to run models based on tuning parameters. Set `IS_TRAINING_MODE = True`. This will print out summary information which can be copied and pasted into [the change log](changelog.md).  
 
 # Exploratory Data Analysis
- - what did I observe when researching the data
- - what approach changes did I need to make
- - insights into the data, make 1-3 of these with data to back things up
-    - teams pass more in last two minutes of the game
-    - when leading by 1+ score teams tend to run more or pass more
- - what baseline did I use, how do I measure accuracy
- - what do false positives and false negatives indicate
 
-# Data Preparation
- - what changes did I need to make
- - what data did I exclude
- - What techniques did you use to ensure your data was free of missing values, and inconsistencies?
- - How did you split the data into training and test sets?
- - Please include any necessary analysis and encoding steps you took as well.
+## Data Preparation
+
+To ensure that the data was free of missing values, I queried each of the features for invalid numeric, boolean, or textual fields. For any fields which had NaN or unknown values, I interrogated those fields for any data patterns which I could overcome. While most of the data did not require filtering, there were some changes that needed to be made:
+- *Formations*: Formation data was consistent, with the exception of QB spikes, kneels, and sneeks. In these plays, the formation is of secondary concern (for instance, any valid formation for a QB spike is ok). In cases where the formation could not be determined `UNKNOWN` was substituted. For `JUMBO` formations, the number of skill lineman could not be determined so I simply set a boolean to indicate this (`extra_ol`). 
+
+The following features needed to be created:
+- Position Features - These indicate the number of each position based on the `offenseFormation` and `receiverAlignment`, including `wr_count`, `te_count`, `rb_count`, and `extra_ol`.
+- Time Features - This indicate the number of seconds remaining in the game (`secs_remaining`), is it inside of the last two minutes of the half or overtime (`is_inside_two_mins`), and whether the game is in overtime (`is_overtime`).
+- Play Result Feature - This expanded on `isDropback` which didn't account for QB sneaks, kneels, and spikes. The feature `play_result` was added with these accounting as runs, runs, and passes respectively. 
+- Offensive Features - The original dataset referenced everything as home or away team; getting at the score differential (`score_offset`) and win probability (`win_probability`) required joining against the games data file.
+
+The following encodings were needed:
+- *Formation* - one hot encoding was used for each formation.
+- *Quarter* - while the quarter is numerical, it needed to be treated categoricall, not a numerical one (the fourth quarter is not double the second quarter). One hot encoding was used here as well as a boolean to indicate overtime. 
+- *Down* - similar to quarter, down needed to be treated as a categorical feature and one-hot encoding was used. 
+- *Offensive Team* - one hot encoding was used here as well, however, this did not prove to be a useful field and was discarded to keep model training performance levels acceptable. 
+
+## Observations
+
+When I started this project, there were several expectations that I expected the data to easily support. 
+
+## Expectation #1: Teams pass substantially more in the last two minutes of each half
+These plots show how the odds of a pass is affected by the last two minutes of each half.
+
+*What I expected to see* - That the rate of passes will spike in the last three minutes of each half consistently across both halves.
+
+*What I actually observed* - The rate of passes spikes in the 29th (72.6%) and 30th minute (84.2%). The variance in the data in the second half was higher but the percentage of passes in the 59th and 60th minutes weren't substantially elevated (56.5% and 64.5%). I would attribute this to teams evenly trying to get one last score before the end of the first half; in the second half the focus is more on winning the game (rather than just scoring points) so the choices here are more inline with the overall average.
+
+<img src="resources/pass_percent_by_min_first_half.png" alt="drawing" width="500"/><br/>
+<img src="resources/pass_percent_by_min_second_half.png" alt="drawing" width="500"/><br/>
+
+## Expectation #2: Teams pass more based on how much they are winning or losing
+These plots show how the odds of a pass or a run is affected by the score offset and the quarter. 
+
+*What I expected to see* - The more that a team is losing by will have a direct correlation to how much the pass; similarly with teams holding a lead and running the ball.  
+
+*What I actually observed* - This becomes more and more pronounced as the game goes on. In the first quarter, when teams were losing by 2 scores (14+ points) they ran at a much _higher_ rate than the overall average (60%). Over time, however, the trend line gradually decreased. 
+
+<img src="resources/score_vs_result_Q1.png" alt="drawing" width="500"/><br/>
+<img src="resources/score_vs_result_Q2.png" alt="drawing" width="500"/><br/>
+<img src="resources/score_vs_result_Q3.png" alt="drawing" width="500"/><br/>
+<img src="resources/score_vs_result_Q4.png" alt="drawing" width="500"/>
+
+## Measuring Accuracy
+For baseline I chose `DummyClassifier`, which uses the mean for the dataset (60.38%), and chose `accuracy` to guage to effectiveness of my models. 
+
+With a false positive, defenses will be expecting a pass when it's actually a run. This means that they will generally have smaller, faster players on the field (defensive backs and coverage linebackers). This will give the offense a greater chance for a successful play (one that nets them a first down) without substantially increasing the risk of an explosive play (one that is 20+ yards). 
+
+With a false negative, defenses will be expecting a run when it's actually a pass. This means that they will generally have larger, slower players on the field (more defensive lineman and linebackers in place of defensive backs). This will give the offense a greater chance for a successful play AND increase the risk of an explosive play. 
+
+For defensive coaches, who are generally risk adverse, false negatives come at a much higher risk than false positives. Letting your opponent slowly move the ball down the field is _greatly preferred_ to letting them get explosive plays and long scoring plays.
+
+## Training Data
+For training data, I choose a 15/85 split (15% training data, 85% test data). The data was shuffled and stratified based on the training features with a constant random state chosen. 
  
 # Outcome
+The goal of this project was to predict the outcome of an individual play. Seven different supervised models were evaluated against their accuracy. The mean of the dataset is 60% passes, the initial expectation was that our model could improve upon the baseline by at least 125% (75% accuracy being our goal). 
+
+## Logistic Regression
+
+## K-Nearest Neighbors
+
+## Decision Tree
+
+## Support Vector Machines
+
+## Ridge
+
+## Random Forest
+
+## Gradient Boosting Ensemble
+
+## Extreme Gradient Boosting
+
+ - Identify the type of learning (classification or regression) and specify the expected output of your selected model.
+ - Determine whether supervised or unsupervised learning algorithms will be used.
  - What types of models did
 you consider for your problem (classification, regression, unsupervised)? 
 Articulate the evaluation metrics you used and how you determined which model
@@ -143,3 +204,9 @@ The following notebooks are in use
 
 
 ##### Contact and Further Information
+
+# Model training changes
+⚠️ ExiBoost - use it
+⚠️ Kneeldowns - Consider victory formation
+⚠️ For spikes - use the previous formation?
+⚠️ Create "behind the sticks" and "short yardage" features
