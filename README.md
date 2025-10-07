@@ -313,6 +313,18 @@ The following shows how the score is affected by the number of boosters; here th
 With hyperparameters, n_estimators=18, max_depth=1, learning_rate=1, it achieved an accuracy of 74.2% and a precision of 0.6923 in 0.02 secs.
 
 Real world scenarios:
+- Scenario 1) pistol formation: predicted 0.65 (actual 0.65), outperformed by 0.2
+- Scenario 2) wildcat formation: predicted 0.85 (actual 0.85), outperformed by 0.1
+- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.0
+- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.8
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.9
+- Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
+- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.0
+- Scenario 8) winning by 2 scores: predicted 0.76 (actual 0.54), outperformed by 23.0
+- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.79 (actual 0.60), outperformed by 18.6
+
+This model was able to outperform the baseline in every scenario. It significantly outperformed in three scenarios (5, 8, and 10).
 
 <img src="resources/model_extreme_gradient.png" width="600"/>
 
