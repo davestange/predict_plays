@@ -26,6 +26,20 @@ Here are some recommendations for future research:
 - [ ] Spike : Stochastic Gradient Descent - didn't get a chance to use this
 
 # Training Log
+## 10/6
+*Best Run is 0.744564 from GradientBoostingClassifier with (n_estimators=32)*
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.0090 secs | 0.603805 | 0.603823 |
+| LogisticRegression (fit_intercept = True, penalty = l1, C = 1.0, class_weight = balanced, solver = liblinear) | 61 | 0.0139 secs | 0.742763 | 0.742011 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 61 | 0.0972 secs | 0.739454 | 0.741500 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 61 | 0.0122 secs | 0.740281 | 0.742157 |
+| SVM (default params) | 61 | 0.0169 secs | 0.770885 | 0.728148 |
+| RandomForestClassifier with (n_estimators=3, max_features=8) | 61 | 0.0210 secs | 0.941274 | 0.694805 |
+| GradientBoostingClassifier with (n_estimators=32) | 61 | 0.0844 secs | 0.758892 | 0.744564 |
+| XGBClassifier (n_estimators=18, max_depth=1, learning_rate=1) | 61 | 0.0213 secs | 0.738627 | 0.742376 |
+
 ## 10/05
 *Best Run is 0.743689 from LogisticRegression (fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky)*
 

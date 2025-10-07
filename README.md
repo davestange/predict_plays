@@ -30,7 +30,7 @@ per [Wikipedia](https://en.wikipedia.org/wiki/American_football)
 The National Football League consists of 32 teams based in American cities; during the season each team will play at most one game against another team with one team playing in their home stadium and the other team designated as away. While there is a rotating bye week throughout the season, most weeks during the season consist of 16 games. 
 
 # DataSet Details
-The data comes from the National Football League and their cloud partner, AWS. The data comes from the [NFL Big Data Bowl 2025](https://www.kaggle.com/competitions/nfl-big-data-bowl-2025) dataset for every NFL game during the first nine weeks of the 2020 NFL season. The following datasets are available:
+The data comes from the National Football League and their cloud partner, AWS. The data comes from the [NFL Big Data Bowl 2025](https://www.kaggle.com/competitions/nfl-big-data-bowl-2025) dataset for every NFL game during the first nine weeks of the 2020 NFL season. The plays dataset consists of 15,000 rows. The following datasets are available:
 
 ## Game Data
 This data provides summary information for each game in the dataset. It includes the following fields
@@ -71,14 +71,15 @@ The data provided can be grouped into three categories:
 * play formation - what information can be gleaned from the offense prior to the snap. This includes what formation is the offense in and what the player groupings are. Offenses must have _at least_ five linemen and the remaining six players are a mixture of a quarterback (QB), running backs (RB), wide receivers (WR), tight ends (TE), and lineman (OL). Additional TEs and OL typically indicates a higher likelihood of a run play while additional WRs will typically indicate the opposite. Offensive formations include `EMPTY` (no players in the backfield), `SHOTGUN` (QB is aligned 5 yards behind the line), `PISTOL` (QB is aligned 2.5 yards behind the line), `SINGLEBACK` (one player in the backfield), `I_FORM` (two players in the backfield), `JUMBO` (additional OL), `WILDCAT` (player other than QB receiving the snap). Receiver alignment indicates how many of each skill position (RB, WR, and TE) are in each formation. 
 
 ## Running the Notebook
-Prior to running the notebook, the following dataset will need to be downloaded from Kaggle: [Big Data Bowl 2025 dataset](https://www.kaggle.com/competitions/nfl-big-data-bowl-2025/data) and extracted to the following folder structure
+The git repo has all of the data needed to run the notebook. The following file structure is expected (but can be overridden in hyperparameters section)
 ```
-├─data
-│ └┬──big_data_bowl_2025
-│  └──────<data-files>
-└─predict_plays
-  └───predict.ipynb
+predict_plays
+├──predict.ipynb
+└──data
+   └──<data-files>
 ```
+The full dataset can be downloaded from Kaggle: [Big Data Bowl 2025 dataset](https://www.kaggle.com/competitions/nfl-big-data-bowl-2025/data)
+
 
 The notebook has two modes, which can be set in the topmost section (Hyperparameters):
 * Hyperparameter Tuning - this allows you to tune parameters. Set `IS_TRAINING_MODE = False`. The final cell (in Summary) prints out the parameters determined during this run. 
@@ -144,63 +145,181 @@ For training data, I choose a 15/85 split (15% training data, 85% test data). Th
 # Outcome
 
 ## Overall Goal
-The goal of this project was to predict the outcome of an individual play. Seven different supervised models were evaluated against their accuracy. The mean of the dataset is 60% passes, the initial expectation was that our model could improve upon the baseline by at least 120% (70% accuracy being our goal). 
+The goal of this project was to predict the outcome of an individual play (run versus pass). Seven different supervised models were evaluated by their accuracy. The mean of the dataset is 60% passes, the initial expectation was that our model could improve upon the baseline by at least 120% (70% accuracy being our goal). 
+
+The models were chosen for their ability to successfully predict outcomes in binary classification with a data set of 15k records. Deep neural networks were not chosen due to the relatively modest amount of data available. 
 
 ## Findings
 The algorithm with the best accuracy LogisticRegression (0.7437) followed by GradientBoostingClassifier, DecisionTreeClassifier, and K-Nearest Neighbors all being differentiated by no more than 1%. The algorithm with the best precision is GradientBoostingClassifier (0.6923) with LogisticRegression, K-Nearest Neighbors, and DecisionTreeClassifier coming in within 1.2%. 
 
-While we were able to achieve a 23% increase over our baseline of 60.38%, we'll need a higher accuracy than 74% before it will be useful.  
+The following table shows each model with the best accuracy. 
 
-| Model | Features | Train Time | Train Accuracy | Test Accuracy | Precision |
-| ----- | -------- | ---------- | -------------  | -----------   | -----------   |
-| LogisticRegression (fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky) | 29 | 0.0163 secs | 0.741935 | 0.743689 | 0.6870 |
-| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 29 | 0.1756 secs | 0.740281 | 0.740479 | 0.6853 |
-| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 29 | 0.0123 secs | 0.746071 | 0.742959 | 0.6843 |
-| SVM (default params) | 29 | 0.0296 secs | 0.767577 | 0.730045 | 0.6523 |
-| RandomForestClassifier with (n_estimators=3, max_features=6) | 29 | 0.0371 secs | 0.937138 | 0.687436 | 0.5997 |
-| GradientBoostingClassifier with (n_estimators=32) | 29 | 0.0924 secs | 0.753929 | 0.743397 | 0.6923 |
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.01 secs | 0.6038 | 0.6038 |
+| LogisticRegression (fit_intercept = True, penalty = l1, C = 1.0, class_weight = balanced, solver = liblinear) | 61 | 0.01 secs | 0.7428 | 0.7420 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 61 | 0.10 secs | 0.7395 | 0.7415 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 61 | 0.01 secs | 0.7403 | 0.7422 |
+| SVM (default params) | 61 | 0.02 secs | 0.7713 | 0.7275 |
+| RandomForestClassifier with (n_estimators=3, max_features=8) | 61 | 0.02 secs | 0.9429 | 0.6886 |
+| GradientBoostingClassifier with (n_estimators=32) | 61 | 0.08 secs | 0.7589 | 0.7446 |
+| XGBClassifier (n_estimators=18, max_depth=1, learning_rate=1) | 61 | 0.01 secs | 0.7386 | 0.7424 |
 
+We were able to achieve a 23% increase over our baseline of 60.38% which exceeded our expectations. While the accuracy of the models was an improvement over the baseline, we're going to validate each model against a series 
 
-| Model | EMPTY | I_FORM | JUMBO | MUDDLE | PISTOL | SHOTGUN | SINGLEBACK | VICTORY | WILDCAT |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| lr | 0.9665 | 0.7138 | 0.8426 | 1.0000 | 0.6552 | 0.7464 | 0.6658 | 1.0000 | 0.8378 | 
-| kn | 0.9665 | 0.7149 | 0.8426 | 0.0476 | 0.6438 | 0.7456 | 0.6616 | 1.0000 | 0.8514 | 
-| dt | 0.9656 | 0.7103 | 0.8426 | 1.0000 | 0.6610 | 0.7468 | 0.6655 | 1.0000 | 0.6892 | 
-| sv | 0.9550 | 0.7034 | 0.8148 | 0.4762 | 0.6800 | 0.7294 | 0.6553 | 0.9728 | 0.8649 | 
-| rf | 0.9259 | 0.6431 | 0.6667 | 0.7143 | 0.6190 | 0.7053 | 0.5918 | 1.0000 | 0.6622 | 
-| gb | 0.9665 | 0.7080 | 0.7963 | 0.0000 | 0.7029 | 0.7509 | 0.6586 | 1.0000 | 0.7297 | 
+There are some scenarios in which the models outperformed expectations. 
+
+### By Formation
+
+In a few formations (Empty and Victory), all of the models were able to predict accurately within 1-2% of the natural occurance. In general, most models were able to predict accurately within 4% of the natural occurance on all formations, however Random Forest performed significantly worse for most of the formations - I Formation (9% below), Jumbo (10% below), Pistol (7% below), and Wildcat (17% below). In only one case was a model able to significantly our perform the natural occurance of the data; Gradient Boost was 5% above for the Pistol formation. It should also be noted that only Decision Tree was able to accurately detect that 100% of all "muddle formations" yielded a spike; this can be attributed to it's unique nature. You can see the performance of each model below.
+
+| Model      | Logistic Regression | KNN | Decision Tree | SVM | Random Forest | Gradient Boost |
+| ---------- | -- | -- | -- | -- | -- | -- |
+| EMPTY      |  0.97 | 0.97 | 0.97 | 0.95 | 0.95 | 0.97 |
+| I_FORM     |  0.71 | 0.71 | 0.71 | 0.70 | 0.62 | 0.72 |
+| JUMBO      |  0.84 | 0.84 | 0.84 | 0.81 | 0.73 | 0.81 |
+| MUDDLE     |  0.00 | 0.00 | 1.00 | 0.48 | 0.43 | 0.00 |
+| PISTOL     |  0.65 | 0.65 | 0.65 | 0.68 | 0.58 | 0.70 |
+| SHOTGUN    |  0.75 | 0.75 | 0.75 | 0.73 | 0.71 | 0.75 |
+| SINGLEBACK |  0.67 | 0.67 | 0.67 | 0.66 | 0.60 | 0.66 |
+| VICTORY    |  1.00 | 1.00 | 1.00 | 0.97 | 0.99 | 1.00 |
+| WILDCAT    |  0.85 | 0.85 | 0.69 | 0.86 | 0.58 | 0.73 |
+
+In a number of real world scenarios, models were able to significantly outperform the natural occurance of the event:
+- When the score is close, offenses pass 59.2% of the time (not far from the overall 60% pass rate). All of the models achieved at least an 8% improvement with Logistic Regression, K-Nearest Neighbors, Decision Tree, and Gradient Boost achieving 73% accuracy (13% improvement).
+- When it's 1st and 10 (default starting conditions when an offense receives the ball), offenses pass 50.4% of the time. All of the models were able to achieve at least 62% accuracy with all but Random Forest achieving 68% accuracy.
+- When teams are losing by two scores (14+ points), teams pass 61% of the time. All of the models were able to achieve at least an 8% increase with Logistic Regression, K-Nearest Neighbors, Decision Tree, and Gradient Boost achieving 73% accuracy (13% improvement)
+- When teams are winning by two scores, teams run 53.4% of the time. In this scenario, Support Vector Machines and Gradient Boost achieved 79% and 78% accuracy (15% increases).
+- When teams are facing a 3rd and medium (3 to 8 yards to go), teams pass 68% of the time. Support Vector Machines and Gradient Boost achieved 79% and 78% accuracy (11% increases)
+- When teams are trailing in the fourth quarter with on 4th and five or less. In this scenario teams run 60% of the time. Support Vector Machine was able to accurately predict the outcome 93% of the time. 
+
+Due to the complicated nature of predicting the outcome
+
+To validate each models' effectiveness, they were tested against ten realworld scenarios:
+- Scenario 1) QB spike: The QB is attempting to stop the running game clock. The formation is identified as "muddle" and it's a pass 100% of the time.
+- Scenario 2) wildcat formation: The offense is using a "run dominant" formation. Teams are run the ball 85% of the time.
+- Scenario 3) shotgun formation: The offense is using a "pass dominant" formation. Teams pass the ball 75% of the time.
+- Scenario 4) one score game: The team is leading or trailing by 8 pts or less. Teams pass 59% of the time (near the overall average).
+- Scenario 5) 1st and 10: This is the default starting position for offenses. Teams pass 50% of the time.
+- Scenario 6) 3rd and long: 3rd down and 8 or more to go. Teams pass 92% of the time.
+- Scenario 7) losing by 2 scores: The team is losing by 14 points or more. Teams pass 61% of the time.
+- Scenario 8) winning by 2 scores: The team is winning by 14 points or more. Teams pass 54% of the time.
+- Scenario 9) 3rd and medium (3-8): Its 3rd down and 3 to 8 yards to go. Teams pass 68% of the time. 
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: Teams run the ball 60% of the time.
 
 ## Logistic Regression
-With hyperparameters, fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky, it achieved an accuracy of 0.743689 and a precision of 0.6870 in 0.0142 secs.
+With hyperparameters, fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky, it achieved an accuracy of 74.4% and a precision of 0.6870 in 0.0142 secs.
+
+Real world scenarios:
+- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.8
+- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.9
+- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.3
+- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 14.0
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.8
+- Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
+- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.1
+- Scenario 8) winning by 2 scores: predicted 0.76 (actual 0.54), outperformed by 22.2
+- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
+
+In general, this model performed really well in most scenarios. It was able to reasonably pick the outcome based on the formation and handled each of the real world scenarios fairly well. In some of the more advanced scenarios, it was able to out perform expectations but not significantly.
 
 <img src="resources/model_logistic_regression.png" width="600"/>
 
 ## K-Nearest Neighbors
-With hyperparameters, algorithm = auto, n_neighbors = 10, weights = None, it achieved an accuracy of 0.740479 and a precision of 0.6853 in 0.1756 secs.
+With hyperparameters, algorithm = auto, n_neighbors = 10, weights = None, it achieved an accuracy of 74% and a precision of 0.6853 in 0.18 secs.
+
+Like Logistic Regression, this model performed really well in most scenarios. It peformed well in the real world scenarios but was not able to out perform expectations significantly.
+
+Real world scenarios:
+- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.8
+- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.9
+- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.4
+- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.8
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.9
+- Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
+- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.0
+- Scenario 8) winning by 2 scores: predicted 0.76 (actual 0.54), outperformed by 23.0
+- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.79 (actual 0.60), outperformed by 18.6
 
 <img src="resources/model_k_neighbors.png" width="600"/>
 
 ## Decision Tree
-With hyperparameters, criterion=entropy, max_depth=6, max_features=None, it achieved an accuracy of 0.742959 and a precision of 0.6843 in 0.0123 secs.
+With hyperparameters, criterion=entropy, max_depth=6, max_features=None, it achieved an accuracy of 74.3% and a precision of 0.6843 in 0.01 secs.
+
+Real world scenarios:
+- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.8
+- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.8
+- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.3
+- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.9
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 18.1
+- Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
+- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.1
+- Scenario 8) winning by 2 scores: predicted 0.76 (actual 0.54), outperformed by 22.7
+- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
 
 <img src="resources/model_decision_tree.png" width="600"/>
 
 ## Support Vector Machines
-With default parameters, it achieved an accuracy of 0.730045 and a precision of 0.6523 in 0.0296 secs.
+With default parameters, it achieved an accuracy of 73% and a precision of 0.6523 in 0.03 secs.
+
+Real world scenarios:
+- Scenario 1) QB spike: predicted 0.73 (actual 1.00), underperformed by 27.3
+- Scenario 2) wildcat formation: predicted 0.73 (actual 0.85), underperformed by 12.3
+- Scenario 3) shotgun formation: predicted 0.73 (actual 0.75), underperformed by 1.8
+- Scenario 4) one score game: predicted 0.71 (actual 0.59), outperformed by 12.0
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.1
+- Scenario 6) 3rd and long: predicted 0.92 (actual 0.92), outperformed by 0.2
+- Scenario 7) losing by 2 scores: predicted 0.73 (actual 0.61), outperformed by 11.5
+- Scenario 8) winning by 2 scores: predicted 0.78 (actual 0.54), outperformed by 24.1
+- Scenario 9) 3rd and medium (3-8): predicted 0.75 (actual 0.68), outperformed by 7.0
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.93 (actual 0.60), outperformed by 32.9
 
 <img src="resources/model_support_vector.png" width="600"/>
 
 ## Random Forest
-With hyperparameters, n_estimators=3, max_features=6, it achieved an accuracy of 0.687436 and a precision of 0.5997 in 0.0371 secs.
+With hyperparameters, n_estimators=3, max_features=6, it achieved an accuracy of 68.7% and a precision of 0.5997 in 0.04 secs.
+
+Real world scenarios:
+- Scenario 1) QB spike: predicted 0.69 (actual 1.00), underperformed by 31.3
+- Scenario 2) wildcat formation: predicted 0.69 (actual 0.85), underperformed by 16.3
+- Scenario 3) shotgun formation: predicted 0.69 (actual 0.75), underperformed by 5.8
+- Scenario 4) one score game: predicted 0.68 (actual 0.59), outperformed by 8.4
+- Scenario 5) 1st and 10: predicted 0.61 (actual 0.50), outperformed by 10.7
+- Scenario 6) 3rd and long: predicted 0.92 (actual 0.92), outperformed by 0.2
+- Scenario 7) losing by 2 scores: predicted 0.69 (actual 0.61), outperformed by 7.6
+- Scenario 8) winning by 2 scores: predicted 0.70 (actual 0.54), outperformed by 16.0
+- Scenario 9) 3rd and medium (3-8): predicted 0.73 (actual 0.68), outperformed by 4.9
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.93 (actual 0.60), outperformed by 32.9
 
 <img src="resources/model_random_forest.png" width="600"/>
 
 ## Gradient Boosting Ensemble
-With hyperparameters, n_estimators=32, it achieved an accuracy of 0.743397 and a precision of 0.6923 in 0.0924 secs.
+With hyperparameters, n_estimators=32, it achieved an accuracy of 74.3% and a precision of 0.6923 in 0.09 secs.
+
+Real world scenarios:
+- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.5
+- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.6
+- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.1
+- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.8
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 18.0
+- Scenario 6) 3rd and long: predicted 0.95 (actual 0.92), outperformed by 2.5
+- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.3
+- Scenario 8) winning by 2 scores: predicted 0.78 (actual 0.54), outperformed by 24.4
+- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.2
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
 
 <img src="resources/model_gradient_boosting.png" width="600"/>
 
 ## Extreme Gradient Boosting
+With hyperparameters, n_estimators=18, max_depth=1, learning_rate=1, it achieved an accuracy of 74.2% and a precision of 0.6923 in 0.02 secs.
+
+Real world scenarios:
+
+<img src="resources/model_extreme_gradient.png" width="600"/>
+
 
 
 
