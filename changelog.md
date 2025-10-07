@@ -26,6 +26,20 @@ Here are some recommendations for future research:
 - [ ] Spike : Stochastic Gradient Descent - didn't get a chance to use this
 
 # Training Log
+## 10/7
+*Best Run is 0.746315 from GradientBoostingClassifier with (n_estimators=42)*
+
+| Model | Features | Train Time | Train Accuracy | Test Accuracy |
+| ----- | -------- | ---------- | -------------  | -----------   |
+| Dummy | 0 | 0.01 secs | 0.6038 | 0.6038 |
+| LogisticRegression (fit_intercept = True, penalty = l1, C = 1.0, class_weight = balanced, solver = liblinear) | 61 | 0.01 secs | 0.7428 | 0.7420 |
+| K-Nearest Neighbors (algorithm = auto, n_neighbors = 10, weights = None) | 61 | 0.10 secs | 0.7395 | 0.7415 |
+| DecisionTreeClassifier with (criterion=entropy, max_depth=6, max_features=None) | 61 | 0.02 secs | 0.7403 | 0.7422 |
+| SVM (default params) | 61 | 0.02 secs | 0.7705 | 0.7283 |
+| RandomForestClassifier with (n_estimators=3, max_features=8) | 61 | 0.02 secs | 0.9376 | 0.6956 |
+| GradientBoostingClassifier with (n_estimators=42) | 61 | 0.12 secs | 0.7676 | 0.7463 |
+| XGBClassifier (n_estimators=18, max_depth=1, learning_rate=1) | 61 | 0.02 secs | 0.7395 | 0.7415 |
+
 ## 10/6
 *Best Run is 0.744564 from GradientBoostingClassifier with (n_estimators=32)*
 

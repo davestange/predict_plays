@@ -150,7 +150,7 @@ The goal of this project was to predict the outcome of an individual play (run v
 The models were chosen for their ability to successfully predict outcomes in binary classification with a data set of 15k records. Deep neural networks were not chosen due to the relatively modest amount of data available. 
 
 ## Findings
-The algorithm with the best accuracy LogisticRegression (0.7437) followed by GradientBoostingClassifier, DecisionTreeClassifier, and K-Nearest Neighbors all being differentiated by no more than 1%. The algorithm with the best precision is GradientBoostingClassifier (0.6923) with LogisticRegression, K-Nearest Neighbors, and DecisionTreeClassifier coming in within 1.2%. 
+The algorithm with the best accuracy LogisticRegression (0.7437) followed by GradientBoostingClassifier, DecisionTreeClassifier, and K-Nearest Neighbors all being differentiated by no more than 1%. The algorithm with the best precision is GradientBoostingClassifier (0.6854) with LogisticRegression, K-Nearest Neighbors, and DecisionTreeClassifier coming in within 1.2%. 
 
 The following table shows each model with the best accuracy. 
 
@@ -274,24 +274,33 @@ In the real world scenarios, it underperformed in five scenarios - formation bas
 
 <img src="resources/model_random_forest.png" width="600"/>
 
+
+Here is the number of trees plotted with the OOB (out of bag) score.
+
+<img src="resources/score_random_forest.png" width="600"/>
+
 ## Gradient Boosting Ensemble
-With hyperparameters, n_estimators=32, it achieved an accuracy of 74.3% and a precision of 0.6923 in 0.09 secs.
+With hyperparameters, n_estimators=42, it achieved an accuracy of 74.6% and a precision of 0.6854 in 0.09 secs.
 
 Real world scenarios:
-- Scenario 1) pistol formation: predicted 0.70 (actual 0.65), outperformed by 5.5
-- Scenario 2) wildcat formation: predicted 0.73 (actual 0.85), underperformed by 12.1
-- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.6
-- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.8
-- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 18.0
+- Scenario 1) pistol formation: predicted 0.71 (actual 0.65), outperformed by 5.9
+- Scenario 2) wildcat formation: predicted 0.78 (actual 0.85), underperformed by 6.7
+- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.7
+- Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.9
+- Scenario 5) 1st and 10: predicted 0.69 (actual 0.50), outperformed by 18.1
 - Scenario 6) 3rd and long: predicted 0.95 (actual 0.92), outperformed by 2.5
-- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.3
-- Scenario 8) winning by 2 scores: predicted 0.78 (actual 0.54), outperformed by 24.4
-- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.2
+- Scenario 7) losing by 2 scores: predicted 0.74 (actual 0.61), outperformed by 13.4
+- Scenario 8) winning by 2 scores: predicted 0.79 (actual 0.54), outperformed by 25.1
+- Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.3
 - Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
 
 In the real world scenarios, it underperformed in only one scenario - wildcat formation. It significantly outperformed in three scenarios (5, 8, and 10)
 
 <img src="resources/model_gradient_boosting.png" width="600"/>
+
+
+The following shows how the score is affected by the number of boosters; here the score peaks at 42.
+<img src="resources/score_gradient_boosting.png" width="600"/>
 
 ## Extreme Gradient Boosting
 With hyperparameters, n_estimators=18, max_depth=1, learning_rate=1, it achieved an accuracy of 74.2% and a precision of 0.6923 in 0.02 secs.
