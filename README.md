@@ -165,38 +165,10 @@ The following table shows each model with the best accuracy.
 | GradientBoostingClassifier with (n_estimators=32) | 61 | 0.08 secs | 0.7589 | 0.7446 |
 | XGBClassifier (n_estimators=18, max_depth=1, learning_rate=1) | 61 | 0.01 secs | 0.7386 | 0.7424 |
 
-We were able to achieve a 23% increase over our baseline of 60.38% which exceeded our expectations. While the accuracy of the models was an improvement over the baseline, we're going to validate each model against a series 
+We were able to achieve a 23% increase over our baseline of 60.38% which exceeded our expectations. However, while the accuracy of the models was an improvement over the baseline, it's still below what is typically expected of a model. To further validate these models, we're going to run them through a series of real world scenarios and compare their accuracy against a baseline value (the highest likelihood of either a run or a pass occuring). This will determine how accurate our model is compared with random chance. We will consider anything below the baseline to be underperforming while anything above the baseline is outperforming. Anything that is 15% higher than the baseline will be considered "significantly outperforming". The best performing model (GradientBoostingClassifier) wasn't able to outperform every scenario leading to the conclusion that an ensemble approach would yield the best accuracy for all scenarios. 
 
-There are some scenarios in which the models outperformed expectations. 
-
-### By Formation
-
-In a few formations (Empty and Victory), all of the models were able to predict accurately within 1-2% of the natural occurance. In general, most models were able to predict accurately within 4% of the natural occurance on all formations, however Random Forest performed significantly worse for most of the formations - I Formation (9% below), Jumbo (10% below), Pistol (7% below), and Wildcat (17% below). In only one case was a model able to significantly our perform the natural occurance of the data; Gradient Boost was 5% above for the Pistol formation. It should also be noted that only Decision Tree was able to accurately detect that 100% of all "muddle formations" yielded a spike; this can be attributed to it's unique nature. You can see the performance of each model below.
-
-| Model      | Logistic Regression | KNN | Decision Tree | SVM | Random Forest | Gradient Boost |
-| ---------- | -- | -- | -- | -- | -- | -- |
-| EMPTY      |  0.97 | 0.97 | 0.97 | 0.95 | 0.95 | 0.97 |
-| I_FORM     |  0.71 | 0.71 | 0.71 | 0.70 | 0.62 | 0.72 |
-| JUMBO      |  0.84 | 0.84 | 0.84 | 0.81 | 0.73 | 0.81 |
-| MUDDLE     |  0.00 | 0.00 | 1.00 | 0.48 | 0.43 | 0.00 |
-| PISTOL     |  0.65 | 0.65 | 0.65 | 0.68 | 0.58 | 0.70 |
-| SHOTGUN    |  0.75 | 0.75 | 0.75 | 0.73 | 0.71 | 0.75 |
-| SINGLEBACK |  0.67 | 0.67 | 0.67 | 0.66 | 0.60 | 0.66 |
-| VICTORY    |  1.00 | 1.00 | 1.00 | 0.97 | 0.99 | 1.00 |
-| WILDCAT    |  0.85 | 0.85 | 0.69 | 0.86 | 0.58 | 0.73 |
-
-In a number of real world scenarios, models were able to significantly outperform the natural occurance of the event:
-- When the score is close, offenses pass 59.2% of the time (not far from the overall 60% pass rate). All of the models achieved at least an 8% improvement with Logistic Regression, K-Nearest Neighbors, Decision Tree, and Gradient Boost achieving 73% accuracy (13% improvement).
-- When it's 1st and 10 (default starting conditions when an offense receives the ball), offenses pass 50.4% of the time. All of the models were able to achieve at least 62% accuracy with all but Random Forest achieving 68% accuracy.
-- When teams are losing by two scores (14+ points), teams pass 61% of the time. All of the models were able to achieve at least an 8% increase with Logistic Regression, K-Nearest Neighbors, Decision Tree, and Gradient Boost achieving 73% accuracy (13% improvement)
-- When teams are winning by two scores, teams run 53.4% of the time. In this scenario, Support Vector Machines and Gradient Boost achieved 79% and 78% accuracy (15% increases).
-- When teams are facing a 3rd and medium (3 to 8 yards to go), teams pass 68% of the time. Support Vector Machines and Gradient Boost achieved 79% and 78% accuracy (11% increases)
-- When teams are trailing in the fourth quarter with on 4th and five or less. In this scenario teams run 60% of the time. Support Vector Machine was able to accurately predict the outcome 93% of the time. 
-
-Due to the complicated nature of predicting the outcome
-
-To validate each models' effectiveness, they were tested against ten realworld scenarios:
-- Scenario 1) QB spike: The QB is attempting to stop the running game clock. The formation is identified as "muddle" and it's a pass 100% of the time.
+Here are the ten real world scenarios that each model was validated against:
+- Scenario 1) pistol formation: This formation is fairly balanced. Teams pass the ball 65% of the time.
 - Scenario 2) wildcat formation: The offense is using a "run dominant" formation. Teams are run the ball 85% of the time.
 - Scenario 3) shotgun formation: The offense is using a "pass dominant" formation. Teams pass the ball 75% of the time.
 - Scenario 4) one score game: The team is leading or trailing by 8 pts or less. Teams pass 59% of the time (near the overall average).
@@ -211,9 +183,9 @@ To validate each models' effectiveness, they were tested against ten realworld s
 With hyperparameters, fit_intercept = True, penalty = l2, C = 1.0, class_weight = None, solver = newton-cholesky, it achieved an accuracy of 74.4% and a precision of 0.6870 in 0.0142 secs.
 
 Real world scenarios:
-- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.8
-- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.9
-- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.3
+- Scenario 1) pistol formation: predicted 0.65 (actual 0.65), outperformed by 0.2
+- Scenario 2) wildcat formation: predicted 0.85 (actual 0.85), outperformed by 0.1
+- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.1
 - Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 14.0
 - Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.8
 - Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
@@ -222,19 +194,17 @@ Real world scenarios:
 - Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
 - Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
 
-In general, this model performed really well in most scenarios. It was able to reasonably pick the outcome based on the formation and handled each of the real world scenarios fairly well. In some of the more advanced scenarios, it was able to out perform expectations but not significantly.
+This model was able to outperform the baseline in every scenario. It significantly outperformed in three scenarios (5, 8, and 10).
 
 <img src="resources/model_logistic_regression.png" width="600"/>
 
 ## K-Nearest Neighbors
 With hyperparameters, algorithm = auto, n_neighbors = 10, weights = None, it achieved an accuracy of 74% and a precision of 0.6853 in 0.18 secs.
 
-Like Logistic Regression, this model performed really well in most scenarios. It peformed well in the real world scenarios but was not able to out perform expectations significantly.
-
 Real world scenarios:
-- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.8
-- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.9
-- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.4
+- Scenario 1) pistol formation: predicted 0.65 (actual 0.65), outperformed by 0.2
+- Scenario 2) wildcat formation: predicted 0.85 (actual 0.85), outperformed by 0.1
+- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.0
 - Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.8
 - Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.9
 - Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
@@ -243,15 +213,17 @@ Real world scenarios:
 - Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
 - Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.79 (actual 0.60), outperformed by 18.6
 
+This model was able to outperform the baseline in every scenario. It significantly outperformed in three scenarios (5, 8, and 10).
+
 <img src="resources/model_k_neighbors.png" width="600"/>
 
 ## Decision Tree
 With hyperparameters, criterion=entropy, max_depth=6, max_features=None, it achieved an accuracy of 74.3% and a precision of 0.6843 in 0.01 secs.
 
 Real world scenarios:
-- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.8
-- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.8
-- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.3
+- Scenario 1) pistol formation: predicted 0.65 (actual 0.65), outperformed by 0.2
+- Scenario 2) wildcat formation: predicted 0.69 (actual 0.85), underperformed by 16.1
+- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.0
 - Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.9
 - Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 18.1
 - Scenario 6) 3rd and long: predicted 0.94 (actual 0.92), outperformed by 2.0
@@ -260,22 +232,26 @@ Real world scenarios:
 - Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.0
 - Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
 
+In the real world scenarios, it underperformed in only one scenario - the predominantly run formation. It significantly outperformed in three scenarios (5, 8, and 10)
+
 <img src="resources/model_decision_tree.png" width="600"/>
 
 ## Support Vector Machines
 With default parameters, it achieved an accuracy of 73% and a precision of 0.6523 in 0.03 secs.
 
 Real world scenarios:
-- Scenario 1) QB spike: predicted 0.73 (actual 1.00), underperformed by 27.3
-- Scenario 2) wildcat formation: predicted 0.73 (actual 0.85), underperformed by 12.3
-- Scenario 3) shotgun formation: predicted 0.73 (actual 0.75), underperformed by 1.8
+- Scenario 1) pistol formation: predicted 0.68 (actual 0.65), outperformed by 3.3
+- Scenario 2) wildcat formation: predicted 0.86 (actual 0.85), outperformed by 1.4
+- Scenario 3) shotgun formation: predicted 0.73 (actual 0.75), underperformed by 1.9
 - Scenario 4) one score game: predicted 0.71 (actual 0.59), outperformed by 12.0
-- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.1
-- Scenario 6) 3rd and long: predicted 0.92 (actual 0.92), outperformed by 0.2
-- Scenario 7) losing by 2 scores: predicted 0.73 (actual 0.61), outperformed by 11.5
-- Scenario 8) winning by 2 scores: predicted 0.78 (actual 0.54), outperformed by 24.1
-- Scenario 9) 3rd and medium (3-8): predicted 0.75 (actual 0.68), outperformed by 7.0
+- Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 17.2
+- Scenario 6) 3rd and long: predicted 0.93 (actual 0.92), outperformed by 0.5
+- Scenario 7) losing by 2 scores: predicted 0.73 (actual 0.61), outperformed by 11.6
+- Scenario 8) winning by 2 scores: predicted 0.78 (actual 0.54), outperformed by 24.9
+- Scenario 9) 3rd and medium (3-8): predicted 0.75 (actual 0.68), outperformed by 7.2
 - Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.93 (actual 0.60), outperformed by 32.9
+
+In the real world scenarios, it underperformed in only one scenario - the predominantly run formation. It significantly outperformed in three scenarios (5, 8, and 10)
 
 <img src="resources/model_support_vector.png" width="600"/>
 
@@ -283,16 +259,18 @@ Real world scenarios:
 With hyperparameters, n_estimators=3, max_features=6, it achieved an accuracy of 68.7% and a precision of 0.5997 in 0.04 secs.
 
 Real world scenarios:
-- Scenario 1) QB spike: predicted 0.69 (actual 1.00), underperformed by 31.3
-- Scenario 2) wildcat formation: predicted 0.69 (actual 0.85), underperformed by 16.3
-- Scenario 3) shotgun formation: predicted 0.69 (actual 0.75), underperformed by 5.8
-- Scenario 4) one score game: predicted 0.68 (actual 0.59), outperformed by 8.4
-- Scenario 5) 1st and 10: predicted 0.61 (actual 0.50), outperformed by 10.7
-- Scenario 6) 3rd and long: predicted 0.92 (actual 0.92), outperformed by 0.2
-- Scenario 7) losing by 2 scores: predicted 0.69 (actual 0.61), outperformed by 7.6
-- Scenario 8) winning by 2 scores: predicted 0.70 (actual 0.54), outperformed by 16.0
-- Scenario 9) 3rd and medium (3-8): predicted 0.73 (actual 0.68), outperformed by 4.9
-- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.93 (actual 0.60), outperformed by 32.9
+- Scenario 1) pistol formation: predicted 0.58 (actual 0.65), underperformed by 6.6
+- Scenario 2) wildcat formation: predicted 0.55 (actual 0.85), underperformed by 29.7
+- Scenario 3) shotgun formation: predicted 0.69 (actual 0.75), underperformed by 5.2
+- Scenario 4) one score game: predicted 0.67 (actual 0.59), outperformed by 8.1
+- Scenario 5) 1st and 10: predicted 0.62 (actual 0.50), outperformed by 11.4
+- Scenario 6) 3rd and long: predicted 0.92 (actual 0.92), underperformed by 0.7
+- Scenario 7) losing by 2 scores: predicted 0.68 (actual 0.61), outperformed by 7.1
+- Scenario 8) winning by 2 scores: predicted 0.69 (actual 0.54), outperformed by 15.9
+- Scenario 9) 3rd and medium (3-8): predicted 0.71 (actual 0.68), outperformed by 3.5
+- Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.57 (actual 0.60), underperformed by 2.9
+
+In the real world scenarios, it underperformed in five scenarios - formation based, 3rd and long, and trailing in the fourth quarter. It significantly outperformed in only one scenarios (8 )
 
 <img src="resources/model_random_forest.png" width="600"/>
 
@@ -300,9 +278,9 @@ Real world scenarios:
 With hyperparameters, n_estimators=32, it achieved an accuracy of 74.3% and a precision of 0.6923 in 0.09 secs.
 
 Real world scenarios:
-- Scenario 1) QB spike: predicted 0.74 (actual 1.00), underperformed by 25.5
-- Scenario 2) wildcat formation: predicted 0.74 (actual 0.85), underperformed by 10.6
-- Scenario 3) shotgun formation: predicted 0.74 (actual 0.75), underperformed by 0.1
+- Scenario 1) pistol formation: predicted 0.70 (actual 0.65), outperformed by 5.5
+- Scenario 2) wildcat formation: predicted 0.73 (actual 0.85), underperformed by 12.1
+- Scenario 3) shotgun formation: predicted 0.75 (actual 0.75), outperformed by 0.6
 - Scenario 4) one score game: predicted 0.73 (actual 0.59), outperformed by 13.8
 - Scenario 5) 1st and 10: predicted 0.68 (actual 0.50), outperformed by 18.0
 - Scenario 6) 3rd and long: predicted 0.95 (actual 0.92), outperformed by 2.5
@@ -310,6 +288,8 @@ Real world scenarios:
 - Scenario 8) winning by 2 scores: predicted 0.78 (actual 0.54), outperformed by 24.4
 - Scenario 9) 3rd and medium (3-8): predicted 0.77 (actual 0.68), outperformed by 9.2
 - Scenario 10) trailing in the 4Q, 4th and 5 or less: predicted 0.86 (actual 0.60), outperformed by 25.7
+
+In the real world scenarios, it underperformed in only one scenario - wildcat formation. It significantly outperformed in three scenarios (5, 8, and 10)
 
 <img src="resources/model_gradient_boosting.png" width="600"/>
 
@@ -320,59 +300,5 @@ Real world scenarios:
 
 <img src="resources/model_extreme_gradient.png" width="600"/>
 
-
-
-
-
-
- - Identify the type of learning (classification or regression) and specify the expected output of your selected model.
- - Determine whether supervised or unsupervised learning algorithms will be used.
- - What types of models did
-you consider for your problem (classification, regression, unsupervised)? 
-Articulate the evaluation metrics you used and how you determined which model
-was most optimal for your problem.
- - list which model did the best and how well it performed
- - list each model, along with ROC curve, confusion matrix, and how it performed in each category
- - can we come up with an approach that is the 
-
-# notebook cleanup
- - try XgBoost
- - cleanup ALL ERRORS
- - disable ALL WARNINGS
- - do final runthrough
-
-# Next Steps areas for future analysis
- - what areas would I consider in the future
- - what are different datasets that I would incorporate
- - how would I handle team differences
-
-# Exploratory Data Analysis
-Talk about
-Initial EDA has been done over the past several months. During this time, I've cleaned the data (removing plays which can't realistically be attributed to run vs pass classification), added a number of additional columns (score offset, dummies, etc), and joined data from other sources (which team is home versus away). I've also done some initial analysis - this plot shows how the odds of pass or run is affected by the quarter and the score offset. 
-![score_vs_result_by_quarter](resources/score_vs_result_by_quarter.png "score_vs_result_by_quarter")
-
-## Methodology
-This is a binary classification problem. To solve this, I will be using scaling, iterative hyperparameter tuning, a number of classification models (logistic regression, K-Nearest Neighbors, Decision Tree, Support Vector Machines) as well as ensemble techniques (random forest and gradient boosting). 
-
-## Results
-The baseline model achieved a baseline accuracy score of 60%. The current best model (using GradientBoostingClassifier with 32 classifiers) is able to achieve an accuracy score of 74.7% (an increase of 24.5%).
-
-Training results can be seen in the [Change Log](changelog.md)
-
-#### Next steps
-The upper limit, given the training features that I'm currently using, seems to be around 75%. I originally used dummy fields for the offensive team (1 of 32 values) but ran into compute limits. Further exploration should include the offensive team, defensive team and other game conditions (weather, etc). 
-
-#### Outline of project
-
-The following notebooks are in use
-- [predict.ipynb](predict.ipynb)
-
-
-##### Contact and Further Information
-
-# Model training changes
-⚠️ ExiBoost - use it
-⚠️ Kneeldowns - Consider victory formation
-⚠️ For spikes - use the previous formation?
-⚠️ Create "behind the sticks" and "short yardage" features
-⚠️ decimal points
+## Next Steps
+There are a number of areas that should be considered to improve this model. More emphasis should be placed on the team conditions - consider the personel availability, recent game results, recent play calling, performance, injuries, etc. What system does the team run, what do they emphasize, how frequently do they run or pass in certain situations. The field conditions should be take into account as well. This should also take into account what the team has run previously in the game (previous 3rd and long, etc). It should also consider the opposing defense - what systems are they using, what are their strengths and weakenesses, where are they substituting due to injury, etc. This model could dive deeper as well and try to predict what _type_ of play the offense will run. Will they run a dropback, play action, screen, quick pass, etc. If they are running, what side are they running to and what run concept are they running. What types of motion are they using - are they using motion to show the defenses hand or are they using motion to create confusion. Any deeper dive here really needs to be training tenanted models, looking at how each team performs. Generating a general model isn't very useful in the context of an individual game. It doesn't matter what 31 other teams would do - all that matters is what the current opponent would do in a given scenario. 
